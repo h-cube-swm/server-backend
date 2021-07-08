@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 django = "*"
+gunicorn = "*"
+mysqlclient = "*"
 
 [dev-packages]
 flake8 = "*"

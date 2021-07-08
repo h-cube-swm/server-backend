@@ -98,7 +98,17 @@ if DEBUG:
         }
     }
 else:
-    pass
+    DATABASES = {
+        "default": {
+            "ENGINE": "",
+            "NAME": "",
+            "USER": get_secret("DB_USER"),
+            "PASSWORD": get_secret("DB_PASSWORD"),
+            "HOST": get_secret("DB_HOST"),
+            "PORT": "3306",
+            "OPTIONS": {"init_command": 'SET sql_mode="STRICT_TRANS_TABLES"'},
+        }
+    }
 
 
 # Password validation
