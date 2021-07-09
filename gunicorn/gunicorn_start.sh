@@ -25,6 +25,8 @@ NUM_WORKERS=4
 NUM_THREADS=4
 # 2-4 x $(NUM_CORES)
 
+LOG_PATH="/var/log/gunicorn_log"
+
 # Start your Django Unicorn
 # Programs meant to be run under supervisor should not daemonize themselves (do not use --daemon)
 # pipenv 사용
@@ -33,6 +35,8 @@ exec pipenv run gunicorn --reload ${DJANGO_WSGI_MODULE}:application \
     --bind 0.0.0.0:$PORT \
     --workers $NUM_WORKERS \
     --threads $NUM_THREADS \
+    --access-logfile ${LOG_PATH}/gunicorn-access.log \
+    --error-logfile ${LOG_PATH}/gunicorn-error.log \
 
 # exec pipenv run gunicorn ${DJANGO_WSGI_MODULE}:application \
 # -b 0.0.0.0:$PORT \

@@ -4,6 +4,13 @@
 ### secrets ###
 secrets.json
 
+### logs ###
+gunicorn_log
+django_log
+
+### docker-compose for test ###
+docker-compose.yml
+
 ### Django ###
 *.log
 *.pot
