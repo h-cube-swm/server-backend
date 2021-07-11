@@ -33,7 +33,7 @@ def get_secret(setting, secrets=secrets):
     try:
         return secrets[setting]
     except KeyError:
-        error_msg = "Set the {} environment variable".format(setting)
+        error_msg = f"Set the {setting} environment variable"
         raise ImproperlyConfigured(error_msg)
 
 
@@ -99,19 +99,23 @@ WSGI_APPLICATION = "src.wsgi.application"
 if DEBUG:
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "development",
+            "USER": get_secret("DB_USER"),
+            "PASSWORD": get_secret("DB_PASSWORD"),
+            "HOST": get_secret("DB_HOST"),
+            "PORT": "5432"
         }
     }
 else:
     DATABASES = {
         "default": {
-            "ENGINE": "",
-            "NAME": "",
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "production",
             "USER": get_secret("DB_USER"),
             "PASSWORD": get_secret("DB_PASSWORD"),
             "HOST": get_secret("DB_HOST"),
-            "PORT": "3306",
+            "PORT": "5432",
             "OPTIONS": {"init_command": 'SET sql_mode="STRICT_TRANS_TABLES"'},
         }
     }
@@ -199,7 +203,7 @@ LOGGING = {
 
 LANGUAGE_CODE = "ko-kr"  # en-us
 
-TIME_ZONE = "Asia/Seoul"  # UTC
+TIME_ZONE = "Asia/Seoul"  # KST
 
 USE_I18N = True
 
