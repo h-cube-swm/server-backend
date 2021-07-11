@@ -7,7 +7,7 @@ WORKDIR /code
 
 COPY requirements.txt /code/
 
-RUN pip install --upgrade pip \
-  && pip install -r requirements.txt
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
-ENTRYPOINT ["sh", "/code/gunicorn/gunicorn_start.sh"]
+ENTRYPOINT ["sh", "init.sh"]
