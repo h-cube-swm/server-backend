@@ -5,10 +5,9 @@ RUN apt-get -y update
 
 WORKDIR /code
 
-COPY Pipfile Pipfile.lock /code/
+COPY requirements.txt /code/
 
 RUN pip install --upgrade pip \
-  && pip install pipenv \
-  && pipenv install
+  && pip install -r requirements.txt
 
 ENTRYPOINT ["sh", "/code/gunicorn/gunicorn_start.sh"]
