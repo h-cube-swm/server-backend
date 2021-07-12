@@ -59,7 +59,16 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = []
 
-PROJECT_APPS = []
+PROJECT_APPS = [
+    "users",
+    "surveys",
+    "survey_responses",
+    "survey_response_logs",
+    "survey_questions",
+    "survey_question_bindings",
+    "survey_logs",
+    "survey_links",
+]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 
@@ -96,29 +105,16 @@ WSGI_APPLICATION = "src.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-if DEBUG:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": "development",
-            "USER": get_secret("DB_USER"),
-            "PASSWORD": get_secret("DB_PASSWORD"),
-            "HOST": get_secret("DB_HOST"),
-            "PORT": "5432"
-        }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "development",
+        "USER": get_secret("DB_USER"),
+        "PASSWORD": get_secret("DB_PASSWORD"),
+        "HOST": get_secret("DB_HOST"),
+        "PORT": "5432",
     }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": "production",
-            "USER": get_secret("DB_USER"),
-            "PASSWORD": get_secret("DB_PASSWORD"),
-            "HOST": get_secret("DB_HOST"),
-            "PORT": "5432",
-            "OPTIONS": {"init_command": 'SET sql_mode="STRICT_TRANS_TABLES"'},
-        }
-    }
+}
 
 
 # Password validation
