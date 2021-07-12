@@ -6,11 +6,11 @@ python manage.py makemigrations
 python manage.py migrate
 
 # pipenv run python manage.py collectstatic --noinput
-# pipenv run python manage.py createsuperuserwithpassword \
-#         --username $DJANGO_SUPERUSER_USERNAME \
-#         --password $DJANGO_SUPERUSER_PASSWORD \
-#         --email $DJANGO_SUPERUSER_EMAIL \
-#         --preserve
+python manage.py createsuperuserwithpassword \
+        --username $DJANGO_SUPERUSER_USERNAME \
+        --password $DJANGO_SUPERUSER_PASSWORD \
+        --email $DJANGO_SUPERUSER_EMAIL \
+        --preserve
 
 # gunicorn settings
 # 참고: https://docs.gunicorn.org/en/stable/settings.html
