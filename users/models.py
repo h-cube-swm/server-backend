@@ -4,4 +4,11 @@ from django.db import models
 
 
 class User(models.Model):
-    pass
+    TYPE_TEMP = "temp"
+    TYPE_BASIC = "basic"
+    TYPE_PRO = "pro"
+
+    TYPE_CHOICES = ((TYPE_TEMP, "Temp"), (TYPE_BASIC, "Basic"), (TYPE_PRO, "Pro"))
+
+    uid = models.TextField()
+    user_type = models.CharField(choices=TYPE_CHOICES, max_length=10)
