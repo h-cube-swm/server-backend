@@ -58,4 +58,27 @@ class ElementView(View):
         pass
 
     def delete(self, request: HttpRequest, pk: int) -> HttpResponse:
-        pass
+        keys = ["token"]
+        request_dict = utils.byte_to_dict(request.body)
+        dic = utils.pop_args(request_dict, *keys)
+
+        if None in list(dic.values()):
+            return utils.send_json(responses.illegalArgument)
+
+        token = dic["token"]
+        user_id = utils.decode_token(token)
+        if user_id is None:
+            return utils.send_json(responses.invalidToken)
+
+        # authorization 추후 데코레이터 기반으로 리팩토링 예정
+        if pk != user_id:
+            return utils.send_json(responses.notAuthorized)
+
+        user = User.objects.filter(id=user_id)
+        if not user.count():
+            return utils.send_json(responses.noUser)
+
+        # 유저 삭제
+        user.delete()
+        result = responses.deleteUserSucceed
+        return utils.send_json(result)
