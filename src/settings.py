@@ -52,6 +52,7 @@ PROJECT_APPS = [
     "survey_question_bindings",
     "survey_logs",
     "survey_links",
+    "views",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
