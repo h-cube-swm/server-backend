@@ -12,11 +12,11 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='User',
+            name='SurveyQuestion',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('uid', models.TextField()),
-                ('user_type', models.CharField(choices=[('pre', 'Temp'), ('basic', 'Basic'), ('pro', 'Pro')], max_length=10)),
+                ('question', models.JSONField()),
+                ('hash', models.TextField()),
             ],
         ),
     ]

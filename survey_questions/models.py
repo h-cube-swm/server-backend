@@ -4,4 +4,5 @@ from django.db import models
 
 
 class SurveyQuestion(models.Model):
-    pass
+    question = models.JSONField()
+    hash = models.TextField()
