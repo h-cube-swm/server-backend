@@ -3,6 +3,9 @@ from django.views import View
 from .models import User
 from utils import utils, responses
 
+import logging
+
+logger = logging.getLogger(__name__)
 # Create your views here.
 
 
@@ -41,7 +44,7 @@ class RootView(View):
 
         # uid 타입이 IDENTIFIER도 EMAIL도 아닐 경우
         if not uid_type:
-            return utils.send_json(responses.illegalUID)
+            return utils.send_json(responses.invalidUID)
         user_type = user_type.get(uid_type)
 
         # 유저 생성

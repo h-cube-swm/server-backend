@@ -17,9 +17,9 @@ def _validate_email(uid):
         return False
 
 
-# 식별자 유효성 검사(추후 구현)
+# 식별자 유효성 검사(Sample Code, 추후 구현)
 def _validate_identifier(uid):
-    if uid != "A":
+    if uid != "invalid":
         return True
     return False
 
@@ -32,6 +32,14 @@ def validate_uid(uid):
     if _validate_identifier(uid):
         uid_type = "IDENTIFIER"
         return uid_type
+    return None
+
+
+# 유저 토큰 검사(Sample Code, 추후 구현, 데코레이터와 엮어 활용 가능)
+def decode_token(token):
+    if token == "valid":
+        user_id = 3  # 추후 복호화한 유저 넘버
+        return user_id
     return None
 
 
@@ -57,9 +65,7 @@ def pk_to_dict(objects, pk):
 
 # request.body로 받아왔을때 binary를 dict로 변환하는 함수
 def byte_to_dict(data):
-    body_unicode = data.decode("utf-8")
-    body = body_unicode.replace("&", "=")
-    body_list = body.split("=")
+    body_list = data.decode("utf-8").replace("&", "=").split("=")
     body_key = []
     body_value = []
     conv = lambda i: i or None
