@@ -8,7 +8,20 @@ from utils import utils, responses
 
 class RootView(View):
     def get(self, request: HttpRequest) -> HttpResponse:
-        result = responses.postOnly
+        if "token" not in request.GET:
+            return utils.send_json(responses.tokenRequired)
+        token = request.GET["token"]
+        user_id = utils.decode_token(token)
+        if user_id is None:
+            return utils.send_json(responses.invalidToken)
+
+        user = User.objects.filter(id=user_id)
+        if not user.count():
+            return utils.send_json(responses.noUser)
+
+        user = utils.to_dict(user)[0]
+        result = responses.ok
+        result["result"] = user
         return utils.send_json(result)
 
     def post(self, request: HttpRequest) -> HttpResponse:
