@@ -6,3 +6,6 @@ from django.db import models
 class SurveyQuestion(models.Model):
     question = models.JSONField()
     hash = models.TextField()
+
+    class Meta:
+        db_table = "survey_questions"
