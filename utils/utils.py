@@ -4,6 +4,37 @@ from urllib import parse
 import json
 
 
+# 이메일 유효성 검사
+def _validate_email(uid):
+    from django.core.validators import validate_email
+    from django.core.exceptions import ValidationError
+
+    try:
+        validate_email(uid)
+        return True
+    except ValidationError as e:
+        print("bad email, details:", e)
+        return False
+
+
+# 식별자 유효성 검사(추후 구현)
+def _validate_identifier(uid):
+    if uid != "A":
+        return True
+    return False
+
+
+# 이메일, 식별자 분기
+def validate_uid(uid):
+    if _validate_email(uid):
+        uid_type = "EMAIL"
+        return uid_type
+    if _validate_identifier(uid):
+        uid_type = "IDENTIFIER"
+        return uid_type
+    return None
+
+
 # 딕셔너리를 JSON으로 전송하는 헬퍼 함수
 def send_json(data):
     res = json.dumps(data)
