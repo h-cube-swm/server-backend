@@ -54,13 +54,13 @@ class RootView(View):
 
 
 class ElementView(View):
-    def get(self, request: HttpRequest, pk: int) -> HttpResponse:
+    def get(self, request: HttpRequest, user_pk: int) -> HttpResponse:
         pass
 
-    def put(self, request: HttpRequest, pk: int) -> HttpResponse:
+    def put(self, request: HttpRequest, user_pk: int) -> HttpResponse:
         pass
 
-    def delete(self, request: HttpRequest, pk: int) -> HttpResponse:
+    def delete(self, request: HttpRequest, user_pk: int) -> HttpResponse:
         keys = ["token"]
         request_dict = utils.byte_to_dict(request.body)
         dic = utils.pop_args(request_dict, *keys)
@@ -74,7 +74,7 @@ class ElementView(View):
             return utils.send_json(responses.invalidToken)
 
         # authorization 추후 데코레이터 기반으로 리팩토링 예정
-        if pk != user_id:
+        if user_pk != user_id:
             return utils.send_json(responses.notAuthorized)
 
         user = User.objects.filter(id=user_id)
