@@ -8,6 +8,9 @@
 gunicorn_log
 django_log
 
+# static files
+/static
+
 ### docker-compose for test ###
 docker-compose.yml
 

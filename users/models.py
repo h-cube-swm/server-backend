@@ -12,3 +12,6 @@ class User(models.Model):
 
     uid = models.TextField()
     user_type = models.CharField(choices=TYPE_CHOICES, max_length=10)
+
+    class Meta:
+        db_table = "users"

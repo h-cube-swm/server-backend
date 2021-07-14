@@ -12,3 +12,6 @@ class SurveyResponse(models.Model):
     binding_id = models.ForeignKey(
         SurveyQuestionBinding, null=True, on_delete=models.DO_NOTHING
     )
+
+    class Meta:
+        db_table = "survey_responses"

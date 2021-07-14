@@ -6,7 +6,7 @@ while ! nc -z db 5432; do sleep 1; done;
 python manage.py makemigrations
 python manage.py migrate
 
-# pipenv run python manage.py collectstatic --noinput
+python manage.py collectstatic --noinput
 python manage.py createsuperuserwithpassword \
         --username $DJANGO_SUPERUSER_USERNAME \
         --password $DJANGO_SUPERUSER_PASSWORD \

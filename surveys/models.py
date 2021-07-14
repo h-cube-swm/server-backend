@@ -26,3 +26,6 @@ class Survey(models.Model):
     meta = models.JSONField(null=True)
     view_type = models.CharField(choices=TYPE_CHOICES, max_length=20)
     user_id = models.ForeignKey(User, null=True, on_delete=models.DO_NOTHING)
+
+    class Meta:
+        db_table = "surveys"

@@ -52,6 +52,7 @@ PROJECT_APPS = [
     "survey_question_bindings",
     "survey_logs",
     "survey_links",
+    "views",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
@@ -60,7 +61,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
+    # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -168,7 +169,7 @@ LOGGING = {
             "class": "django.utils.log.AdminEmailHandler",
         },
         "file": {
-            "level": "INFO",
+            "level": "DEBUG",
             "filters": ["require_debug_true"],
             "class": "logging.handlers.RotatingFileHandler",
             "filename": "/var/log/django_log/django.log",
@@ -180,12 +181,12 @@ LOGGING = {
     "loggers": {
         "django": {
             "handlers": ["console", "mail_admins", "file"],
-            "level": "INFO",
+            "level": "DEBUG",
         },
         "django.server": {
             "handlers": ["django.server"],
-            "level": "INFO",
-            "propagate": False,
+            "level": "DEBUG",
+            "propagate": True,
         },
     },
 }
