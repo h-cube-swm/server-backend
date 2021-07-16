@@ -15,13 +15,13 @@ class LinkView(View):
     def get(self, request: HttpRequest) -> HttpResponse:
         survey = Survey.objects.create()
         result = responses.ok
-        result["link"] = str(survey.link)
+        result["link"] = str(survey.survey_link)
         return utils.send_json(result)
         
 
 class SurveyView(View):
     def get(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
-        survey = Survey.objects.filter(link=survey_id)
+        survey = Survey.objects.filter(survey_link=survey_id)
         if not survey.count():
             return utils.send_json(responses.invalidSurveyID)
         survey = utils.to_dict(survey)
