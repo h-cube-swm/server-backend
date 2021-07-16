@@ -11,7 +11,8 @@ class SurveyAdmin(admin.ModelAdmin):
         "description",
         "status",
         "contents",
-        "link",
+        "survey_link",
+        "result_link",
         "view",
     )
 

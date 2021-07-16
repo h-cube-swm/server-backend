@@ -24,7 +24,8 @@ class Survey(models.Model):
         choices=STATUS_CHOICES, max_length=20, default=STATUS_EDITING
     )
     contents = models.JSONField(default=dict)
-    link = models.UUIDField(default=uuid.uuid4, editable=False)
+    survey_link = models.UUIDField(default=uuid.uuid4, editable=False)
+    result_link = models.UUIDField(default=uuid.uuid4, editable=False)
     view = models.TextField(default="설문 view타입을 넣어주세요")
 
     class Meta:
