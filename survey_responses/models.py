@@ -3,6 +3,8 @@ from django.db.models.deletion import DO_NOTHING
 from surveys.models import Survey
 
 # Create your models here.
+
+
 class SurveyResponse(models.Model):
     answer = models.TextField()
     submit_time = models.DateTimeField(auto_now_add=True)
