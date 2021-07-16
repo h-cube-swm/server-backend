@@ -7,6 +7,7 @@ import uuid
 # Create your views here.
 
 
+# /link
 class LinkView(View):
     def get(self, request: HttpRequest) -> HttpResponse:
         survey = Survey.objects.create()
@@ -15,6 +16,7 @@ class LinkView(View):
         return utils.send_json(result)
 
 
+# /surveys/{survey_id}
 class SurveyView(View):
     def get(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
         survey = Survey.objects.filter(survey_link=survey_id)
@@ -67,6 +69,8 @@ class SurveyView(View):
 
         return utils.send_json(responses.modifySurveySucceed)
 
+
+# /surveys/{survey_id}/end
 class SurveyEndView(View):
     def put(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
         survey = Survey.objects.filter(survey_link=survey_id)
