@@ -21,7 +21,7 @@ surveyCannotEdit = {
 }
 modifySurveySucceed = {
     "success": True,
-    "status": 200,
+    "status": 201,
     "comment": "Modify Survey Succeed",
 }
 surveyAlreadyEnd = {
