@@ -17,12 +17,13 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from surveys.views import LinkView, SurveyView
+from surveys.views import LinkView, SurveyView, SurveyEndView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("views.urls")),
-    path("link/", LinkView.as_view()),
-    path("surveys/<uuid:survey_id>/", SurveyView.as_view()),
+    path("link", LinkView.as_view()),
+    path("surveys/<uuid:survey_id>", SurveyView.as_view()),
+    path("surveys/<uuid:survey_id>/end", SurveyEndView.as_view()),
 ]
 urlpatterns += staticfiles_urlpatterns()

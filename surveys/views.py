@@ -66,3 +66,19 @@ class SurveyView(View):
         )
 
         return utils.send_json(responses.modifySurveySucceed)
+
+class SurveyEndView(View):
+    def put(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
+        survey = Survey.objects.filter(survey_link=survey_id)
+        if not survey.count():
+            return utils.send_json(responses.invalidSurveyID)
+        if survey[0].status != "editing":
+            return utils.send_json(responses.surveyAlreadyEnd)
+
+        status = "published"
+        survey.update(status=status)
+
+        survey = utils.to_dict(survey)
+        result = responses.ok
+        result["result"] = survey
+        return utils.send_json(result)
