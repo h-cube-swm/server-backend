@@ -10,8 +10,9 @@ class SurveyAdmin(admin.ModelAdmin):
         "title",
         "description",
         "status",
-        "meta",
-        "view_type",
+        "contents",
+        "link",
+        "view",
     )
 
 

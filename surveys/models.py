@@ -1,5 +1,8 @@
 from django.db import models
-from users.models import User
+import uuid
+
+# Create your models here.
+
 
 STATUS_EDITING = "editing"
 STATUS_PUBLISHED = "published"
@@ -13,19 +16,19 @@ STATUS_CHOICES = (
     (STATUS_DELETED, "Deleted"),
 )
 
-TYPE_SCROLL = "scroll"
-TYPE_SLIDE = "slide"
-
-TYPE_CHOICES = ((TYPE_SCROLL, "Scroll"), (TYPE_SLIDE, "Slide"))
-
 
 class Survey(models.Model):
-    title = models.TextField()
-    description = models.TextField(null=True)
-    status = models.CharField(choices=STATUS_CHOICES, max_length=20)
-    meta = models.JSONField(null=True)
-    view_type = models.CharField(choices=TYPE_CHOICES, max_length=20)
-    user_id = models.ForeignKey(User, null=True, on_delete=models.DO_NOTHING)
+    title = models.TextField(default="설문 제목을 넣어주세요")
+    description = models.TextField(null=True, default="설문 설명을 넣어주세요")
+    status = models.CharField(
+        choices=STATUS_CHOICES, max_length=20, default=STATUS_EDITING
+    )
+    contents = models.JSONField(default=dict)
+    link = models.UUIDField(default=uuid.uuid4, editable=False)
+    view = models.TextField(default="설문 view타입을 넣어주세요")
 
     class Meta:
         db_table = "surveys"
+
+    def __str__(self):
+        return str(self.id)
