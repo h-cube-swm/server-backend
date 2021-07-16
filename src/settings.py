@@ -41,17 +41,14 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-THIRD_PARTY_APPS = ["django_createsuperuserwithpassword"]
+THIRD_PARTY_APPS = [
+    "django_createsuperuserwithpassword",
+    "corsheaders",
+]
 
 PROJECT_APPS = [
-    "users",
     "surveys",
     "survey_responses",
-    "survey_response_logs",
-    "survey_questions",
-    "survey_question_bindings",
-    "survey_logs",
-    "survey_links",
     "views",
 ]
 
@@ -60,12 +57,16 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+CORS_ORIGIN_WHITELIST = ["https://h-cu.be", "https://dev.h-cu.be"]
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = "src.urls"
 
