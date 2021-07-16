@@ -17,7 +17,10 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from surveys.views import LinkView, SurveyView, SurveyEndView
+from surveys.views import LinkView
+from surveys.views import SurveyView
+from surveys.views import SurveyEndView
+from survey_responses.views import ResponseView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -25,5 +28,6 @@ urlpatterns = [
     path("link", LinkView.as_view()),
     path("surveys/<uuid:survey_id>", SurveyView.as_view()),
     path("surveys/<uuid:survey_id>/end", SurveyEndView.as_view()),
+    path("surveys/<uuid:survey_id>/responses", ResponseView.as_view()),
 ]
 urlpatterns += staticfiles_urlpatterns()

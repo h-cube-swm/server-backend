@@ -29,3 +29,10 @@ surveyAlreadyEnd = {
     "status": 400,
     "comment": "Survey Already Published or Closed",
 }
+
+# Responses 관련
+createResponseSucceed = {
+    "success": True,
+    "status": 201,
+    "comment": "Create Response Succeed",
+}
