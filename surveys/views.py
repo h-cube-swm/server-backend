@@ -10,9 +10,12 @@ from utils import utils, responses
 # Create your views here.
 
 
-class RootView(View):
+class LinkView(View):
     def get(self, request: HttpRequest) -> HttpResponse:
+        survey = Survey.objects.create()
         result = responses.ok
+        result["link"] = str(survey.link)
+        return utils.send_json(result)
         
 
     def post(self, request: HttpRequest) -> HttpResponse:
