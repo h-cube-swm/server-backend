@@ -15,6 +15,15 @@ class LinkView(View):
         result["link"] = str(survey.survey_link)
         return utils.send_json(result)
 
+    def post(self, request: HttpRequest) -> HttpResponse:
+        return utils.send_json(responses.noAPI)
+
+    def put(self, request: HttpRequest) -> HttpResponse:
+        return utils.send_json(responses.noAPI)
+
+    def delete(self, request: HttpRequest) -> HttpResponse:
+        return utils.send_json(responses.noAPI)
+
 
 # /surveys/{survey_id}
 class SurveyView(View):
@@ -26,6 +35,9 @@ class SurveyView(View):
         result = responses.ok
         result["result"] = survey
         return utils.send_json(result)
+
+    def post(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
+        return utils.send_json(responses.noAPI)
 
     def put(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
         survey = Survey.objects.filter(survey_link=survey_id)
@@ -69,9 +81,18 @@ class SurveyView(View):
 
         return utils.send_json(responses.modifySurveySucceed)
 
+    def delete(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
+        return utils.send_json(responses.noAPI)
+
 
 # /surveys/{survey_id}/end
 class SurveyEndView(View):
+    def get(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
+        return utils.send_json(responses.noAPI)
+
+    def post(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
+        return utils.send_json(responses.noAPI)
+
     def put(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
         survey = Survey.objects.filter(survey_link=survey_id)
         if not survey.count():
@@ -86,3 +107,6 @@ class SurveyEndView(View):
         result = responses.ok
         result["result"] = survey
         return utils.send_json(result)
+
+    def delete(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
+        return utils.send_json(responses.noAPI)
