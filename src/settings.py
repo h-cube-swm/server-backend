@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 # SECURE_SSL_REDIRECT = False
-
+APPEND_SLASH = False
 # Application definition
 
 DJANGO_APPS = [
