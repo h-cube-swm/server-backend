@@ -65,7 +65,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CORS_ORIGIN_WHITELIST = ["https://h-cu.be", "https://dev.h-cu.be"]
+CORS_ORIGIN_WHITELIST = ["https://the-form.io", "https://dev.the-form.io"]
 CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = "src.urls"
