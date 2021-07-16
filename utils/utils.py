@@ -4,45 +4,6 @@ from urllib import parse
 import json
 
 
-# 이메일 유효성 검사
-def _validate_email(uid):
-    from django.core.validators import validate_email
-    from django.core.exceptions import ValidationError
-
-    try:
-        validate_email(uid)
-        return True
-    except ValidationError as e:
-        print("bad email, details:", e)
-        return False
-
-
-# 식별자 유효성 검사(Sample Code, 추후 구현)
-def _validate_identifier(uid):
-    if uid != "invalid":
-        return True
-    return False
-
-
-# 이메일, 식별자 분기
-def validate_uid(uid):
-    if _validate_email(uid):
-        uid_type = "EMAIL"
-        return uid_type
-    if _validate_identifier(uid):
-        uid_type = "IDENTIFIER"
-        return uid_type
-    return None
-
-
-# 유저 토큰 검사(Sample Code, 추후 구현, 데코레이터와 엮어 활용 가능)
-def decode_token(token):
-    if token == "valid":
-        user_id = 3  # 추후 복호화한 유저 넘버
-        return user_id
-    return None
-
-
 # 딕셔너리를 JSON으로 전송하는 헬퍼 함수
 def send_json(data):
     res = json.dumps(data)
@@ -63,7 +24,12 @@ def pk_to_dict(objects, pk):
     return to_dict(objects.filter(pk=pk))
 
 
-# request.body로 받아왔을때 binary를 dict로 변환하는 함수
+# request.body로 받아왔을때 json을 dict로 변환하는 함수
+def json_to_dict(data):
+    return json.loads(data.decode("utf-8"))
+
+
+# request.body로 받아왔을때 x-www-form-urlencoded를 dict로 변환하는 함수
 def byte_to_dict(data):
     body_list = data.decode("utf-8").replace("&", "=").split("=")
     body_key = []
