@@ -27,7 +27,7 @@ class LinkView(View):
 
 # /surveys/{survey_id}
 class SurveyView(View):
-    def get(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
+    def get(self, request: HttpRequest, survey_id: str) -> HttpResponse:
         survey = Survey.objects.filter(survey_link=survey_id)
         if not survey.count():
             return utils.send_json(responses.invalidSurveyID)
@@ -36,10 +36,10 @@ class SurveyView(View):
         result["result"] = survey
         return utils.send_json(result)
 
-    def post(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
+    def post(self, request: HttpRequest, survey_id: str) -> HttpResponse:
         return utils.send_json(responses.noAPI)
 
-    def put(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
+    def put(self, request: HttpRequest, survey_id: str) -> HttpResponse:
         survey = Survey.objects.filter(survey_link=survey_id)
         if not survey.count():
             return utils.send_json(responses.invalidSurveyID)
@@ -81,19 +81,19 @@ class SurveyView(View):
 
         return utils.send_json(responses.modifySurveySucceed)
 
-    def delete(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
+    def delete(self, request: HttpRequest, survey_id: str) -> HttpResponse:
         return utils.send_json(responses.noAPI)
 
 
 # /surveys/{survey_id}/end
 class SurveyEndView(View):
-    def get(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
+    def get(self, request: HttpRequest, survey_id: str) -> HttpResponse:
         return utils.send_json(responses.noAPI)
 
-    def post(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
+    def post(self, request: HttpRequest, survey_id: str) -> HttpResponse:
         return utils.send_json(responses.noAPI)
 
-    def put(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
+    def put(self, request: HttpRequest, survey_id: str) -> HttpResponse:
         survey = Survey.objects.filter(survey_link=survey_id)
         if not survey.count():
             return utils.send_json(responses.invalidSurveyID)
@@ -108,5 +108,5 @@ class SurveyEndView(View):
         result["result"] = survey
         return utils.send_json(result)
 
-    def delete(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
+    def delete(self, request: HttpRequest, survey_id: str) -> HttpResponse:
         return utils.send_json(responses.noAPI)
