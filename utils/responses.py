@@ -13,6 +13,11 @@ no = {"success": False, "status": 400, "comment": "NO"}
 illegalArgument = {"success": False, "status": 400, "comment": "Illegal Argument"}
 
 # Survey 관련
+invalidUUID = {
+    "success": False,
+    "status": 400,
+    "comment": "Invalid UUID(should be xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)",
+}
 invalidSurveyID = {"success": False, "status": 400, "comment": "Invalid Survey ID"}
 surveyCannotEdit = {
     "success": False,
