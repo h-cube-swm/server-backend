@@ -2,7 +2,6 @@ from django.http import HttpResponse, HttpRequest
 from django.views import View
 from surveys.models import Survey
 from utils import utils, responses
-import uuid
 
 # Create your views here.
 
@@ -34,7 +33,7 @@ class SurveyView(View):
         survey = Survey.objects.filter(survey_link=survey_id)
         if not survey.count():
             return utils.send_json(responses.invalidSurveyID)
-        survey = utils.to_dict(survey)
+        survey = utils.to_dict(survey)[0]["fields"]
         result = responses.ok
         result["result"] = survey
         return utils.send_json(result)
@@ -112,7 +111,7 @@ class SurveyEndView(View):
         status = "published"
         survey.update(status=status)
 
-        survey = utils.to_dict(survey)
+        survey = utils.to_dict(survey)[0]["fields"]
         result = responses.ok
         result["result"] = survey
         return utils.send_json(result)
