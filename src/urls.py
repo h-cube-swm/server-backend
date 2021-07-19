@@ -24,6 +24,7 @@ from survey_responses.views import ResponseView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("admin", admin.site.urls),
     path("", include("views.urls")),
     path("link", LinkView.as_view()),
     path("surveys/<str:survey_id>", SurveyView.as_view()),
