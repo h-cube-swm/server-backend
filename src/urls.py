@@ -26,8 +26,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("views.urls")),
     path("link", LinkView.as_view()),
-    path("surveys/<uuid:survey_id>", SurveyView.as_view()),
-    path("surveys/<uuid:survey_id>/end", SurveyEndView.as_view()),
-    path("surveys/<uuid:survey_id>/responses", ResponseView.as_view()),
+    path("surveys/<str:survey_id>", SurveyView.as_view()),
+    path("surveys/<str:survey_id>/end", SurveyEndView.as_view()),
+    path("surveys/<str:survey_id>/responses", ResponseView.as_view()),
 ]
 urlpatterns += staticfiles_urlpatterns()
