@@ -105,17 +105,20 @@ class SurveyEndView(View):
         survey = Survey.objects.filter(survey_link=survey_id)
         if not survey.count():
             return utils.send_json(responses.invalidSurveyID)
-        # editing 상황에서 처음으로 end api를 호출하는 경우 status 값 업데이트
-        if survey[0].status == "editing":
-            status = "published"
-            survey.update(status=status)
-            result = responses.ok
-        else:
-            result = responses.surveyAlreadyEnd
 
-        survey = utils.to_dict(survey)[0]["fields"]
-        result["result"] = survey
-        return utils.send_json(result)
+        # result 필드 추가 및 response를 위한 클로저 함수
+        def generate_result(result):
+            survey_result = utils.to_dict(survey)[0]["fields"]
+            result["result"] = survey_result
+            return utils.send_json(result)
+
+        if survey[0].status != "editing":
+            return generate_result(responses.surveyAlreadyEnd)
+
+        # editing 상황에서 처음으로 end api를 호출하는 경우 status 값 업데이트
+        status = "published"
+        survey.update(status=status)
+        return generate_result(responses.ok)
 
     def delete(self, request: HttpRequest, survey_id: str) -> HttpResponse:
         return utils.send_json(responses.noAPI)
