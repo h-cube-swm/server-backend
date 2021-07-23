@@ -18,8 +18,8 @@ STATUS_CHOICES = (
 
 
 class Survey(models.Model):
-    title = models.TextField(default="설문 제목을 넣어주세요")
-    description = models.TextField(null=True, default="설문 설명을 넣어주세요")
+    title = models.TextField(default="")
+    description = models.TextField(null=True, default="")
     status = models.CharField(
         choices=STATUS_CHOICES, max_length=20, default=STATUS_EDITING
     )
