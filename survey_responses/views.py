@@ -3,16 +3,38 @@ from django.views import View
 from survey_responses.models import SurveyResponse
 from surveys.models import Survey
 from utils import utils, responses
-import uuid
 
 # Create your views here.
 
 
 class ResponseView(View):
-    def get(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
-        return utils.send_json(responses.noAPI)
+    def get(self, request: HttpRequest, survey_id: str) -> HttpResponse:
+        if not utils.is_valid_uuid(survey_id):
+            return utils.send_json(responses.invalidUUID)
 
-    def post(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
+        survey = Survey.objects.filter(survey_link=survey_id)
+        if not survey.count():
+            return utils.send_json(responses.invalidSurveyID)
+
+        survey_responses = SurveyResponse.objects.filter(survey_id=survey[0]).values(
+            "answer", "submit_time"
+        )
+        if not survey_responses.count():
+            return utils.send_json(responses.noSurveyResponse)
+
+        survey_question = utils.to_dict(survey)[0]["fields"]["contents"]
+        survey_responses = list(survey_responses)
+
+        result = responses.ok
+        result["result"] = {}
+        result["result"]["survey"] = survey_question
+        result["result"]["answers"] = survey_responses
+        return utils.send_json(result)
+
+    def post(self, request: HttpRequest, survey_id: str) -> HttpResponse:
+        if not utils.is_valid_uuid(survey_id):
+            return utils.send_json(responses.invalidUUID)
+
         survey = Survey.objects.filter(survey_link=survey_id)
         if not survey.count():
             return utils.send_json(responses.invalidSurveyID)
@@ -35,8 +57,8 @@ class ResponseView(View):
 
         return utils.send_json(responses.createResponseSucceed)
 
-    def put(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
+    def put(self, request: HttpRequest, survey_id: str) -> HttpResponse:
         return utils.send_json(responses.noAPI)
 
-    def delete(self, request: HttpRequest, survey_id: uuid) -> HttpResponse:
+    def delete(self, request: HttpRequest, survey_id: str) -> HttpResponse:
         return utils.send_json(responses.noAPI)

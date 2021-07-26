@@ -41,3 +41,9 @@ createResponseSucceed = {
     "status": 201,
     "comment": "Create Response Succeed",
 }
+
+noSurveyResponse = {
+    "success": False,
+    "status": 400,
+    "comment": "There is No Survey Response",
+}
