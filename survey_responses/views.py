@@ -17,6 +17,9 @@ class ResponseView(View):
         if not survey.count():
             return utils.send_json(responses.invalidSurveyID)
 
+        if not request.body:
+            return utils.send_json(responses.illegalArgument)
+
         body_keys = ["answer"]
         request_dict = utils.json_to_dict(request.body)
 
