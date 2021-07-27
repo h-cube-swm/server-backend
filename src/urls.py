@@ -29,6 +29,8 @@ urlpatterns = [
     path("link", LinkView.as_view()),
     path("surveys/<str:survey_id>", SurveyView.as_view()),
     path("surveys/<str:survey_id>/end", SurveyEndView.as_view()),
-    path("surveys/<str:survey_id>/responses", ResponseView.as_view()),
+    path(
+        "surveys/<str:id>/responses", ResponseView.as_view()
+    ),  # <str:id> -> id가 survey_id이거나 result_id이거나 할 수 있음
 ]
 urlpatterns += staticfiles_urlpatterns()

@@ -47,3 +47,9 @@ noSurveyResponse = {
     "status": 400,
     "comment": "There is No Survey Response",
 }
+
+invalidResultID = {
+    "success": False,
+    "status": 400,
+    "comment": "Invalid Result ID(ID Should be Result ID, Not a Survey ID",
+}
