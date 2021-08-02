@@ -19,8 +19,6 @@ class ResponseView(View):
         survey_responses = SurveyResponse.objects.filter(survey_id=survey[0]).values(
             "answer", "submit_time"
         )
-        if not survey_responses.count():
-            return utils.send_json(responses.noSurveyResponse)
 
         survey_question = utils.to_dict(survey)[0]["fields"]["contents"]
         survey_responses = list(survey_responses)
