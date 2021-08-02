@@ -11,7 +11,7 @@ class LinkView(View):
     def get(self, request: HttpRequest) -> HttpResponse:
         survey = Survey.objects.create()
         result = responses.ok
-        result["link"] = str(survey.survey_link)
+        result["result"] = str(survey.survey_link)
         return utils.send_json(result)
 
     def post(self, request: HttpRequest) -> HttpResponse:
