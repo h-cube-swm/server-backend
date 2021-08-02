@@ -6,7 +6,7 @@ from surveys.models import Survey
 
 
 class SurveyResponse(models.Model):
-    answer = models.TextField()
+    answer = models.JSONField()
     submit_time = models.DateTimeField(auto_now_add=True)
     survey_id = models.ForeignKey(Survey, on_delete=DO_NOTHING)
 
