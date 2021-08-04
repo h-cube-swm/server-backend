@@ -20,7 +20,14 @@ class ResponseView(View):
             "answer", "submit_time"
         )
 
-        survey_question = utils.to_dict(survey)[0]["fields"]["contents"]
+        survey_all_fields = utils.to_dict(survey)[0]["fields"]
+
+        survey_question = (
+            {"title": survey_all_fields["title"]}
+            | {"description": survey_all_fields["description"]}
+            | survey_all_fields["contents"]
+        )
+
         survey_responses = list(survey_responses)
 
         result = responses.ok
