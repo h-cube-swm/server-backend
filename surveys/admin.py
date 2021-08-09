@@ -15,6 +15,7 @@ class SurveyAdmin(admin.ModelAdmin):
         "result_link",
         "created_datetime",
         "updated_datetime",
+        "user_email",
     )
 
 

@@ -18,16 +18,17 @@ STATUS_CHOICES = (
 
 
 class Survey(models.Model):
-    title = models.TextField(default="")
-    description = models.TextField(null=True, default="")
+    title = models.TextField(default="", blank=True)
+    description = models.TextField(null=True, default="", blank=True)
     status = models.CharField(
         choices=STATUS_CHOICES, max_length=20, default=STATUS_EDITING
     )
-    contents = models.JSONField(default=dict)
+    contents = models.JSONField(default=dict, blank=True)
     survey_link = models.UUIDField(default=uuid.uuid4, editable=False)
     result_link = models.UUIDField(default=uuid.uuid4, editable=False)
     created_datetime = models.DateTimeField(auto_now_add=True)
     updated_datetime = models.DateTimeField(auto_now=True)
+    user_email = models.EmailField(max_length=320, null=True, blank=True)
 
     class Meta:
         db_table = "surveys"
