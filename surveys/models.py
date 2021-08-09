@@ -26,7 +26,8 @@ class Survey(models.Model):
     contents = models.JSONField(default=dict)
     survey_link = models.UUIDField(default=uuid.uuid4, editable=False)
     result_link = models.UUIDField(default=uuid.uuid4, editable=False)
-    view = models.TextField(default="설문 view타입을 넣어주세요")
+    created_datetime = models.DateTimeField(auto_now_add=True)
+    updated_datetime = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = "surveys"

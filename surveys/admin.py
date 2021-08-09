@@ -13,7 +13,8 @@ class SurveyAdmin(admin.ModelAdmin):
         "contents",
         "survey_link",
         "result_link",
-        "view",
+        "created_datetime",
+        "updated_datetime",
     )
 
 

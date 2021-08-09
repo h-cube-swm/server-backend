@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpRequest
 from django.views import View
 from surveys.models import Survey
 from utils import utils, responses
+import datetime
 
 # Create your views here.
 
@@ -51,7 +52,7 @@ class SurveyView(View):
         if survey[0].status != "editing":
             return utils.send_json(responses.surveyCannotEdit)
 
-        body_keys = ["title", "description", "contents", "view"]
+        body_keys = ["title", "description", "contents"]
         request_dict = utils.json_to_dict(request.body)
 
         # request.body에서 딕셔너리 추출
@@ -74,14 +75,11 @@ class SurveyView(View):
         if dic["contents"] is None:
             dic["contents"] = survey["fields"]["contents"]
 
-        if dic["view"] is None:
-            dic["view"] = survey["fields"]["view"]
-
         original_survey.update(
             title=dic["title"],
             description=dic["description"],
             contents=dic["contents"],
-            view=dic["view"],
+            updated_datetime=datetime.datetime.now(),
         )
 
         return utils.send_json(responses.modifySurveySucceed)
@@ -117,7 +115,7 @@ class SurveyEndView(View):
 
         # editing 상황에서 처음으로 end api를 호출하는 경우 status 값 업데이트
         status = "published"
-        survey.update(status=status)
+        survey.update(status=status, updated_datetime=datetime.datetime.now())
         return generate_result(responses.ok)
 
     def delete(self, request: HttpRequest, survey_id: str) -> HttpResponse:
