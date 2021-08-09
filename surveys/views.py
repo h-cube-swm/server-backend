@@ -11,7 +11,7 @@ from django.utils import timezone
 class LinkView(View):
     def get(self, request: HttpRequest) -> HttpResponse:
         survey = Survey.objects.create()
-        result = responses.ok
+        result = responses.ok.copy()
         result["result"] = str(survey.survey_link)
         return utils.send_json(result)
 
@@ -35,7 +35,7 @@ class SurveyView(View):
         if not survey.count():
             return utils.send_json(responses.invalidSurveyID)
         survey = utils.to_dict(survey)[0]["fields"]
-        result = responses.ok
+        result = responses.ok.copy()
         result["result"] = survey
         return utils.send_json(result)
 
@@ -116,7 +116,7 @@ class SurveyEndView(View):
         # editing 상황에서 처음으로 end api를 호출하는 경우 status 값 업데이트
         status = "published"
         survey.update(status=status, updated_datetime=timezone.now())
-        return generate_result(responses.ok)
+        return generate_result(responses.ok.copy())
 
     def delete(self, request: HttpRequest, survey_id: str) -> HttpResponse:
         return utils.send_json(responses.noAPI)
@@ -137,6 +137,9 @@ class SurveyEmailView(View):
         survey = Survey.objects.filter(survey_link=survey_id)
         if not survey.count():
             return utils.send_json(responses.invalidSurveyID)
+
+        if not request.body:
+            return utils.send_json(responses.illegalArgument)
 
         body_keys = ["email"]
         request_dict = utils.json_to_dict(request.body)

@@ -30,7 +30,7 @@ class ResponseView(View):
 
         survey_responses = list(survey_responses)
 
-        result = responses.ok
+        result = responses.ok.copy()
         result["result"] = {}
         result["result"]["survey"] = survey_question
         result["result"]["answers"] = survey_responses
