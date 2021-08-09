@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpRequest
 from django.views import View
 from surveys.models import Survey
 from utils import utils, responses
-import datetime
+from django.utils import timezone
 
 # Create your views here.
 
@@ -79,7 +79,7 @@ class SurveyView(View):
             title=dic["title"],
             description=dic["description"],
             contents=dic["contents"],
-            updated_datetime=datetime.datetime.now(),
+            updated_datetime=timezone.now(),
         )
 
         return utils.send_json(responses.modifySurveySucceed)
@@ -115,7 +115,7 @@ class SurveyEndView(View):
 
         # editing 상황에서 처음으로 end api를 호출하는 경우 status 값 업데이트
         status = "published"
-        survey.update(status=status, updated_datetime=datetime.datetime.now())
+        survey.update(status=status, updated_datetime=timezone.now())
         return generate_result(responses.ok)
 
     def delete(self, request: HttpRequest, survey_id: str) -> HttpResponse:
