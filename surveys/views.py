@@ -120,3 +120,32 @@ class SurveyEndView(View):
 
     def delete(self, request: HttpRequest, survey_id: str) -> HttpResponse:
         return utils.send_json(responses.noAPI)
+
+
+# /surveys/{survey_id}/emails
+class SurveyEmailView(View):
+    def get(self, request: HttpRequest, survey_id: str) -> HttpResponse:
+        return utils.send_json(responses.noAPI)
+
+    def post(self, request: HttpRequest, survey_id: str) -> HttpResponse:
+        return utils.send_json(responses.noAPI)
+
+    def put(self, request: HttpRequest, survey_id: str) -> HttpResponse:
+        if not utils.is_valid_uuid(survey_id):
+            return utils.send_json(responses.invalidUUID)
+
+        survey = Survey.objects.filter(survey_link=survey_id)
+        if not survey.count():
+            return utils.send_json(responses.invalidSurveyID)
+
+        body_keys = ["email"]
+        request_dict = utils.json_to_dict(request.body)
+
+        # request.body에서 딕셔너리 추출
+        dic = utils.pop_args(request_dict, *body_keys)
+
+        survey.update(user_email=dic["email"])
+        return utils.send_json(responses.ok)
+
+    def delete(self, request: HttpRequest, survey_id: str) -> HttpResponse:
+        return utils.send_json(responses.noAPI)

@@ -20,6 +20,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from surveys.views import LinkView
 from surveys.views import SurveyView
 from surveys.views import SurveyEndView
+from surveys.views import SurveyEmailView
 from survey_responses.views import ResponseView
 
 urlpatterns = [
@@ -32,5 +33,6 @@ urlpatterns = [
     path(
         "surveys/<str:id>/responses", ResponseView.as_view()
     ),  # <str:id> -> id가 survey_id이거나 result_id이거나 할 수 있음
+    path("surveys/<str:survey_id>/emails", SurveyEmailView.as_view()),
 ]
 urlpatterns += staticfiles_urlpatterns()
