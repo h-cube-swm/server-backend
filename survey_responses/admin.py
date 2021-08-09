@@ -5,7 +5,7 @@ from .models import SurveyResponse
 
 
 class SurveyResponseAdmin(admin.ModelAdmin):
-    list_display = ("id", "answer", "submit_time", "survey_id")
+    list_display = ("id", "answer", "submit_time", "updated_datetime", "survey_id")
 
 
 admin.site.register(SurveyResponse, SurveyResponseAdmin)
