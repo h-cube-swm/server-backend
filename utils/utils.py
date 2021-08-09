@@ -5,6 +5,19 @@ from uuid import UUID
 import json
 
 
+# 이메일 유효성 검사 헬퍼 함수
+def is_valid_email(email):
+    from django.core.validators import validate_email
+    from django.core.exceptions import ValidationError
+
+    try:
+        validate_email(email)
+        return True
+    except ValidationError as e:
+        print("bad email, details:", e)
+        return False
+
+
 # 딕셔너리를 JSON으로 전송하는 헬퍼 함수
 def send_json(data):
     res = json.dumps(data, default=str)
@@ -28,21 +41,6 @@ def pk_to_dict(objects, pk):
 # request.body로 받아왔을때 json을 dict로 변환하는 함수
 def json_to_dict(data):
     return json.loads(data.decode("utf-8"))
-
-
-# request.body로 받아왔을때 x-www-form-urlencoded를 dict로 변환하는 함수
-def byte_to_dict(data):
-    body_list = data.decode("utf-8").replace("&", "=").split("=")
-    body_key = []
-    body_value = []
-    conv = lambda i: i or None
-    for i in range(len(body_list)):
-        if i % 2 == 0:
-            body_key.append(body_list[i])
-        else:
-            body_value.append(conv(parse.unquote(body_list[i])))
-    dict_body = dict(zip(body_key, body_value))
-    return dict_body
 
 
 def is_valid_uuid(uuid_to_test, version=4):

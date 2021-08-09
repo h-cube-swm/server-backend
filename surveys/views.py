@@ -147,6 +147,9 @@ class SurveyEmailView(View):
         # request.body에서 딕셔너리 추출
         dic = utils.pop_args(request_dict, *body_keys)
 
+        if not utils.is_valid_email(dic["email"]):
+            return utils.send_json(responses.noEmail)
+
         survey.update(user_email=dic["email"])
         return utils.send_json(responses.ok)
 

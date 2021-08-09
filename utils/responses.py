@@ -47,3 +47,10 @@ invalidResultID = {
     "status": 400,
     "comment": "Invalid Result ID(ID Should be Result ID, Not a Survey ID",
 }
+
+# Email 관련
+noEmail = {
+    "success": False,
+    "status": 400,
+    "comment": "not a correct email (example@example.com)",
+}
