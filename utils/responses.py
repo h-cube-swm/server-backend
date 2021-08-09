@@ -30,8 +30,8 @@ modifySurveySucceed = {
     "comment": "Modify Survey Succeed",
 }
 surveyAlreadyEnd = {
-    "success": True,
-    "status": 200,
+    "success": False,
+    "status": 400,
     "comment": "Survey Already Published or Closed",
 }
 

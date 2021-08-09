@@ -111,7 +111,7 @@ class SurveyEndView(View):
             return utils.send_json(result)
 
         if survey[0].status != "editing":
-            return generate_result(responses.surveyAlreadyEnd)
+            return utils.send_json(responses.surveyAlreadyEnd)
 
         # editing 상황에서 처음으로 end api를 호출하는 경우 status 값 업데이트
         status = "published"
