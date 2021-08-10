@@ -54,3 +54,9 @@ noEmail = {
     "status": 400,
     "comment": "not a correct email (example@example.com)",
 }
+
+emailError = {
+    "success": True,
+    "status": 200,
+    "comment": "Email updated but Cannot Send Email...",
+}

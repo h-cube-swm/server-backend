@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+  <h1 style="margin-bottom: 3rem;"> <strong>더 폼</strong>에서 작성하신 &lt;{{title}}&gt;에 대한 설문 정보입니다.</h1>
+  <div class="container" sytle="display: flex;
+align-items: center;">
+    <div className="box" style="border-radius: 15px;
+    display: flex;
+    align-items: center;
+  padding: 1rem;
+  width: 24rem;
+  height: 8rem;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  background: linear-gradient(to right, #2b44ff, #0afff6);
+  ">
+      <div className="description">
+        <h1 style="font-size: 2rem; font-weight: 700; color: white;">
+          아래 링크를 통해
+          <br />
+          사람들에게 <strong style="font-size: 2rem; font-weight: 700; color: #1dff0a;">배포</strong>하세요.
+        </h1>
+      </div>
+    </div>
+    <h3 style="color: white;">
+      https://the-form.io/forms/survey/response/{{survey_link}}
+    </h3>
+    <div className="box" style="border-radius: 15px;
+    display: flex;
+    align-items: center;
+  padding: 1rem;
+  width: 24rem;
+  height: 8rem;
+  margin-top: 3rem;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  background: linear-gradient(to right, #2b44ff, #0afff6);
+  ">
+      <div className="description">
+        <h1 style="font-size: 2rem; font-weight: 700; color: white;">
+          아래 링크를 통해
+          <br />
+          <strong style="font-size: 2rem; font-weight: 700; color: #1dff0a;">결과</strong>를 확인하세요.
+        </h1>
+      </div>
+    </div>
+    <h3 style="color: white;">
+      https://the-form.io/forms/survey/result/{{result_link}}
+    </h3>
+  </div>
+</body>
+
+</html>

@@ -1,10 +1,41 @@
+from django.db.models.query import QuerySet
 from django.http import HttpResponse, HttpRequest
 from django.views import View
 from surveys.models import Survey
 from utils import utils, responses
 from django.utils import timezone
+from django.template.loader import render_to_string
+import requests
+import os
 
 # Create your views here.
+
+
+def send_email(user_email, survey_model: QuerySet):
+    survey_model = survey_model[0]
+    user_email = user_email
+    title = survey_model.title
+    survey_link = survey_model.survey_link
+    result_link = survey_model.result_link
+
+    response = requests.post(
+        "https://api.mailgun.net/v3/the-form.io/messages",
+        auth=("api", os.environ.get("MAILGUN_API_KEY")),
+        data={
+            "from": "<support@the-form.io>",
+            "to": [user_email],
+            "subject": f"더 폼에서 작성하신 <{title}> 설문에 대한 정보입니다.",
+            "html": render_to_string(
+                "mail.html",
+                {
+                    "title": title,
+                    "survey_link": survey_link,
+                    "result_link": result_link,
+                },
+            ),
+        },
+    )
+    return response
 
 
 # /link
@@ -145,13 +176,21 @@ class SurveyEmailView(View):
         request_dict = utils.json_to_dict(request.body)
 
         # request.body에서 딕셔너리 추출
+        body_keys = ["email"]
         dic = utils.pop_args(request_dict, *body_keys)
 
         if not utils.is_valid_email(dic["email"]):
             return utils.send_json(responses.noEmail)
 
-        survey.update(user_email=dic["email"])
+        user_email = dic["email"]
+        survey.update(user_email=user_email)
+
+        # 메일건을 통한 메일 송신
+        response = send_email(user_email, survey)
+        if response.status_code == 200:
         return utils.send_json(responses.ok)
+
+        return utils.send_json(responses.emailError)
 
     def delete(self, request: HttpRequest, survey_id: str) -> HttpResponse:
         return utils.send_json(responses.noAPI)
