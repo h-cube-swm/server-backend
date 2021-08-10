@@ -25,7 +25,7 @@ class Survey(models.Model):
     )
     contents = models.JSONField(default=dict, blank=True)
     survey_link = models.UUIDField(default=uuid.uuid4, editable=False)
-    result_link = models.UUIDField(default=uuid.uuid4, editable=False)
+    response_link = models.UUIDField(default=uuid.uuid4, editable=False)
     created_datetime = models.DateTimeField(auto_now_add=True)
     updated_datetime = models.DateTimeField(auto_now=True)
     user_email = models.EmailField(max_length=320, null=True, blank=True)

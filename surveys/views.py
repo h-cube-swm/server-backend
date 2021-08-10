@@ -5,6 +5,7 @@ from surveys.models import Survey
 from utils import utils, responses
 from django.utils import timezone
 from django.template.loader import render_to_string
+from django.db.models import Q
 import requests
 import os
 
@@ -16,7 +17,7 @@ def send_email(user_email, survey_model: QuerySet):
     user_email = user_email
     title = survey_model.title
     survey_link = survey_model.survey_link
-    result_link = survey_model.result_link
+    response_link = survey_model.response_link
 
     response = requests.post(
         "https://api.mailgun.net/v3/the-form.io/messages",
@@ -29,8 +30,8 @@ def send_email(user_email, survey_model: QuerySet):
                 "mail.html",
                 {
                     "title": title,
-                    "survey_link": survey_link,
-                    "result_link": result_link,
+                    "survey_link": response_link,
+                    "result_link": survey_link,
                 },
             ),
         },
@@ -62,9 +63,17 @@ class SurveyView(View):
         if not utils.is_valid_uuid(survey_id):
             return utils.send_json(responses.invalidUUID)
 
-        survey = Survey.objects.filter(survey_link=survey_id)
-        if not survey.count():
+        # 설문이 요청될 때 설문 링크와 응답 링크를 둘 다 이용하여 검색한다.
+        survey = Survey.objects.filter(
+            Q(survey_link=survey_id) | Q(response_link=survey_id)
+        )
+
+        if survey.count() == 0:
             return utils.send_json(responses.invalidSurveyID)
+
+        # 설마 UUID 가 겹치지는 않겠지만, 혹시 모르니까 Assert를 걸어준다.
+        assert survey.count() == 1
+
         survey = utils.to_dict(survey)[0]["fields"]
         result = responses.ok.copy()
         result["result"] = survey
@@ -83,10 +92,10 @@ class SurveyView(View):
         if survey[0].status != "editing":
             return utils.send_json(responses.surveyCannotEdit)
 
-        body_keys = ["title", "description", "contents"]
         request_dict = utils.json_to_dict(request.body)
 
         # request.body에서 딕셔너리 추출
+        body_keys = ["title", "description", "contents"]
         dic = utils.pop_args(request_dict, *body_keys)
 
         # 위 파라미터 중 1개라도 담겨서 오지 않는 경우
@@ -97,6 +106,7 @@ class SurveyView(View):
         survey = utils.to_dict(survey)[0]
 
         # 데이터베이스 update가 문제 없게 동작하기 위한 분기 처리
+        # ToDo : 최신 문법에서 간단하게 처리 가능할 것임. 자바스크립트 전개연산자처럼 사용가능한 걸로 암.
         if dic["title"] is None:
             dic["title"] = survey["fields"]["title"]
 
@@ -132,7 +142,7 @@ class SurveyEndView(View):
             return utils.send_json(responses.invalidUUID)
 
         survey = Survey.objects.filter(survey_link=survey_id)
-        if not survey.count():
+        if survey.count() == 0:
             return utils.send_json(responses.invalidSurveyID)
 
         # result 필드 추가 및 response를 위한 클로저 함수
@@ -141,12 +151,10 @@ class SurveyEndView(View):
             result["result"] = survey_result
             return utils.send_json(result)
 
-        if survey[0].status != "editing":
-            return utils.send_json(responses.surveyAlreadyEnd)
-
         # editing 상황에서 처음으로 end api를 호출하는 경우 status 값 업데이트
         status = "published"
         survey.update(status=status, updated_datetime=timezone.now())
+
         return generate_result(responses.ok.copy())
 
     def delete(self, request: HttpRequest, survey_id: str) -> HttpResponse:
@@ -172,7 +180,6 @@ class SurveyEmailView(View):
         if not request.body:
             return utils.send_json(responses.illegalArgument)
 
-        body_keys = ["email"]
         request_dict = utils.json_to_dict(request.body)
 
         # request.body에서 딕셔너리 추출
@@ -188,7 +195,7 @@ class SurveyEmailView(View):
         # 메일건을 통한 메일 송신
         response = send_email(user_email, survey)
         if response.status_code == 200:
-        return utils.send_json(responses.ok)
+            return utils.send_json(responses.ok)
 
         return utils.send_json(responses.emailError)
 

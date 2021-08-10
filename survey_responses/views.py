@@ -12,7 +12,7 @@ class ResponseView(View):
         if not utils.is_valid_uuid(id):
             return utils.send_json(responses.invalidUUID)
 
-        survey = Survey.objects.filter(result_link=id)
+        survey = Survey.objects.filter(survey_link=id)
         if not survey.count():
             return utils.send_json(responses.invalidResultID)
 
@@ -31,16 +31,14 @@ class ResponseView(View):
         survey_responses = list(survey_responses)
 
         result = responses.ok.copy()
-        result["result"] = {}
-        result["result"]["survey"] = survey_question
-        result["result"]["answers"] = survey_responses
+        result["result"] = {"survey": survey_question, "answers": survey_responses}
         return utils.send_json(result)
 
     def post(self, request: HttpRequest, id: str) -> HttpResponse:
         if not utils.is_valid_uuid(id):
             return utils.send_json(responses.invalidUUID)
 
-        survey = Survey.objects.filter(survey_link=id)
+        survey = Survey.objects.filter(response_link=id)
         if not survey.count():
             return utils.send_json(responses.invalidSurveyID)
 

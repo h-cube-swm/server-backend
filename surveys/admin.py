@@ -12,7 +12,7 @@ class SurveyAdmin(admin.ModelAdmin):
         "status",
         "contents",
         "survey_link",
-        "result_link",
+        "response_link",
         "created_datetime",
         "updated_datetime",
         "user_email",

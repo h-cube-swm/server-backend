@@ -25,14 +25,21 @@ from survey_responses.views import ResponseView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("admin", admin.site.urls),
     path("", include("views.urls")),
     path("link", LinkView.as_view()),
     path("surveys/<str:survey_id>", SurveyView.as_view()),
+    # surveys/<str:survey_id> 는 그 id가
+    # survey_link일 경우 (설문을 수정중일 때)
+    # response_link일 경우 (설문에 응답하기 위해 설문지를 조회할 때)
+    # 일 수도 있음.
     path("surveys/<str:survey_id>/end", SurveyEndView.as_view()),
     path(
         "surveys/<str:id>/responses", ResponseView.as_view()
-    ),  # <str:id> -> id가 survey_id이거나 result_id이거나 할 수 있음
+    ),
+    # surveys/<str:id>/responses 엔드포인트의 경우
+    # <str:id> -> id가
+    # survey_link이거나             (응답 리스트를 조회할 경우)
+    # response_link이거나 할 수 있음  (실제 응답이 들어올 때)
     path("surveys/<str:survey_id>/emails", SurveyEmailView.as_view()),
 ]
 urlpatterns += staticfiles_urlpatterns()
