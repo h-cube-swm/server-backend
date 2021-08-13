@@ -6,6 +6,8 @@ from utils import utils, responses
 from django.utils import timezone
 from django.template.loader import render_to_string
 from django.db.models import Q
+from django.core.mail import EmailMultiAlternatives
+from django.utils.html import strip_tags
 import requests
 import os
 
@@ -19,24 +21,51 @@ def send_email(user_email, survey_model: QuerySet):
     survey_link = survey_model.survey_link
     response_link = survey_model.response_link
 
-    response = requests.post(
-        "https://api.mailgun.net/v3/the-form.io/messages",
-        auth=("api", os.environ.get("MAILGUN_API_KEY")),
-        data={
-            "from": "<support@the-form.io>",
-            "to": [user_email],
-            "subject": f"더 폼에서 작성하신 <{title}> 설문에 대한 정보입니다.",
-            "html": render_to_string(
-                "mail.html",
-                {
-                    "title": title,
-                    "survey_link": response_link,
-                    "result_link": survey_link,
-                },
-            ),
+    subject = f"더 폼에서 작성하신 <{title}> 설문에 대한 정보입니다."
+    from_email = "<support@the-form.io>"
+    to = [user_email]
+
+    html_message = render_to_string(
+        "mail.html",
+        {
+            "title": title,
+            "survey_link": response_link,
+            "result_link": survey_link,
         },
     )
-    return response
+    plain_message = strip_tags(html_message)
+
+    msg = EmailMultiAlternatives(
+        subject=subject, body=plain_message, from_email=from_email, to=to
+    )
+    msg.attach_alternative(html_message, "text/html")
+    msg.content_subtype = "html"
+    msg.mixed_subtype = "related"
+
+    try:
+        msg.send()
+    except Exception as e:
+        print("메일 송신 중 에러가 발생 했습니다", e)
+        # 만약 전송 실패했을시 mailgun 활용
+        response = requests.post(
+            "https://api.mailgun.net/v3/the-form.io/messages",
+            auth=("api", os.environ.get("MAILGUN_API_KEY")),
+            data={
+                "from": "<support@the-form.io>",
+                "to": [user_email],
+                "subject": f"더 폼에서 작성하신 <{title}> 설문에 대한 정보입니다.",
+                "html": render_to_string(
+                    "mail.html",
+                    {
+                        "title": title,
+                        "survey_link": response_link,
+                        "result_link": survey_link,
+                    },
+                ),
+            },
+        )
+        return response.status_code
+    return 200
 
 
 # /link
@@ -192,9 +221,9 @@ class SurveyEmailView(View):
         user_email = dic["email"]
         survey.update(user_email=user_email)
 
-        # 메일건을 통한 메일 송신
+        # aws ses를 통한 메일 송신
         response = send_email(user_email, survey)
-        if response.status_code == 200:
+        if response == 200:
             return utils.send_json(responses.ok)
 
         return utils.send_json(responses.emailError)
