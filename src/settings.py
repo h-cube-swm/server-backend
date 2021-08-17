@@ -57,6 +57,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -139,6 +140,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # logging
+REQUIRE_TYPE = "require_debug_true" if DEBUG else "require_debug_false"
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -176,7 +179,7 @@ LOGGING = {
         },
         "file": {
             "level": "DEBUG",
-            "filters": ["require_debug_true"],
+            "filters": [REQUIRE_TYPE],
             "class": "logging.handlers.RotatingFileHandler",
             "filename": "/var/log/django_log/django.log",
             "maxBytes": 1024 * 1024 * 5,  # 5 MB
