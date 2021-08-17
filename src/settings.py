@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True if os.environ.get("DEBUG") else False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -115,10 +115,10 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "NAME": "production",
-            "USER": os.environ.get("POSTGRES_USER"),
-            "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-            "HOST": os.environ.get("POSTGRES_HOST"),
+            "NAME": os.environ.get("POSTGRES_DB_PRODUCTION"),
+            "USER": os.environ.get("POSTGRES_USER_PRODUCTION"),
+            "PASSWORD": os.environ.get("POSTGRES_PASSWORD_PRODUCTION"),
+            "HOST": os.environ.get("POSTGRES_HOST_PRODUCTION"),
             "PORT": "5432",
         }
     }
