@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.environ.get("DEBUG") else False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["api.the-form.io"]
 
 # SECURE_SSL_REDIRECT = False
 APPEND_SLASH = False
@@ -56,10 +56,10 @@ PROJECT_APPS = [
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -67,8 +67,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CORS_ORIGIN_WHITELIST = ["https://the-form.io", "https://dev.the-form.io"]
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = ["https://the-form.io", "https://dev.the-form.io"]
 
 ROOT_URLCONF = "src.urls"
 
