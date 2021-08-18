@@ -4,6 +4,15 @@ from urllib import parse
 from uuid import UUID
 import json
 
+ALLOWED_ORIGIN = ["https://the-form.io/", "https://dev.the-form.io/"]
+# 요청한 origin이 the-form.io나 dev.the-form.io 프론트엔드인지 식별 - 임시
+def is_the_form(request):
+    if "HTTP_REFERER" not in request.META:
+        return False
+    if request.META["HTTP_REFERER"] not in ALLOWED_ORIGIN:
+        return False
+    return True
+
 
 # 이메일 유효성 검사 헬퍼 함수
 def is_valid_email(email):

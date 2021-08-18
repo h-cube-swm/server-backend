@@ -9,6 +9,9 @@ from utils import utils, responses
 
 class ResponseView(View):
     def get(self, request: HttpRequest, id: str) -> HttpResponse:
+        if not utils.is_the_form(request):
+            return utils.send_json(responses.notAllowed)
+
         if not utils.is_valid_uuid(id):
             return utils.send_json(responses.invalidUUID)
 
@@ -35,6 +38,9 @@ class ResponseView(View):
         return utils.send_json(result)
 
     def post(self, request: HttpRequest, id: str) -> HttpResponse:
+        if not utils.is_the_form(request):
+            return utils.send_json(responses.notAllowed)
+
         if not utils.is_valid_uuid(id):
             return utils.send_json(responses.invalidUUID)
 

@@ -60,3 +60,10 @@ emailError = {
     "status": 200,
     "comment": "Email updated but Cannot Send Email...",
 }
+
+# 허가되지 않은 ORIGIN
+notAllowed = {
+    "success": False,
+    "status": 400,
+    "comment": "Not Allowed Origin",
+}

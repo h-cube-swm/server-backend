@@ -71,6 +71,8 @@ def send_email(user_email, survey_model: QuerySet):
 # /link
 class LinkView(View):
     def get(self, request: HttpRequest) -> HttpResponse:
+        if not utils.is_the_form(request):
+            return utils.send_json(responses.notAllowed)
         survey = Survey.objects.create()
         result = responses.ok.copy()
         result["result"] = str(survey.survey_link)
@@ -89,6 +91,9 @@ class LinkView(View):
 # /surveys/{survey_id}
 class SurveyView(View):
     def get(self, request: HttpRequest, survey_id: str) -> HttpResponse:
+        if not utils.is_the_form(request):
+            return utils.send_json(responses.notAllowed)
+
         if not utils.is_valid_uuid(survey_id):
             return utils.send_json(responses.invalidUUID)
 
@@ -112,6 +117,9 @@ class SurveyView(View):
         return utils.send_json(responses.noAPI)
 
     def put(self, request: HttpRequest, survey_id: str) -> HttpResponse:
+        if not utils.is_the_form(request):
+            return utils.send_json(responses.notAllowed)
+
         if not utils.is_valid_uuid(survey_id):
             return utils.send_json(responses.invalidUUID)
 
@@ -167,6 +175,9 @@ class SurveyEndView(View):
         return utils.send_json(responses.noAPI)
 
     def put(self, request: HttpRequest, survey_id: str) -> HttpResponse:
+        if not utils.is_the_form(request):
+            return utils.send_json(responses.notAllowed)
+
         if not utils.is_valid_uuid(survey_id):
             return utils.send_json(responses.invalidUUID)
 
@@ -199,6 +210,9 @@ class SurveyEmailView(View):
         return utils.send_json(responses.noAPI)
 
     def put(self, request: HttpRequest, survey_id: str) -> HttpResponse:
+        if not utils.is_the_form(request):
+            return utils.send_json(responses.notAllowed)
+
         if not utils.is_valid_uuid(survey_id):
             return utils.send_json(responses.invalidUUID)
 
