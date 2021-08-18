@@ -5,6 +5,7 @@ click
 Django
 flake8
 gunicorn
+gevent
 mccabe
 mypy-extensions
 pathspec
