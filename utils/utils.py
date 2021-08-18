@@ -7,8 +7,8 @@ import json
 ALLOWED_ORIGIN = [
     "https://the-form.io",
     "https://the-form.io/",
-    "https://dev.the-form.io",
-    "https://dev.the-form.io/",
+    # "https://dev.the-form.io",
+    # "https://dev.the-form.io/",
 ]
 # 요청한 origin이 the-form.io나 dev.the-form.io 프론트엔드인지 식별 - 임시
 def is_the_form(request):
