@@ -3,6 +3,7 @@
 
 ### secrets for test###
 .env*
+docker.sh
 
 ### logs ###
 gunicorn_log
