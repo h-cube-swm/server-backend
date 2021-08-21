@@ -3,11 +3,14 @@ ENV PYTHONUNBUFFERED 1
 
 RUN apt-get -y update 
 
-WORKDIR /code
+WORKDIR /app
 
-COPY requirements.txt /code/
+COPY requirements.txt ./
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y netcat
+COPY ./ ./
+
+EXPOSE 8000
+CMD ./init.sh
