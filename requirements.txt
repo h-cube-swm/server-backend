@@ -16,7 +16,6 @@ regex
 sqlparse
 toml
 psycopg2
-django-createsuperuserwithpassword
 django-cors-headers
 requests
 whitenoise
