@@ -20,3 +20,4 @@ django-createsuperuserwithpassword
 django-cors-headers
 requests
 whitenoise
+python-decouple

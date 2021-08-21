@@ -9,7 +9,7 @@ from django.db.models import Q
 from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
 import requests
-import os
+from decouple import config
 
 # Create your views here.
 
@@ -49,7 +49,7 @@ def send_email(user_email, survey_model: QuerySet):
         # 만약 전송 실패했을시 mailgun 활용
         response = requests.post(
             "https://api.mailgun.net/v3/the-form.io/messages",
-            auth=("api", os.environ.get("MAILGUN_API_KEY")),
+            auth=("api", config("MAILGUN_API_KEY")),
             data={
                 "from": "<support@the-form.io>",
                 "to": [user_email],

@@ -12,21 +12,25 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY", default="S3cr3t_K3y_F0r_Dj@ng0_@pp")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True if os.environ.get("DEBUG") else False
+DEBUG = config("DEBUG", default=True, cast=bool)
 
-ALLOWED_HOSTS = ["api.the-form.io"]
+if DEBUG:
+    ALLOWED_HOSTS = ["*"]
+else:
+    ALLOWED_HOSTS = ["api.the-form.io"]
 
 # SECURE_SSL_REDIRECT = False
 APPEND_SLASH = False
@@ -67,15 +71,18 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CORS_ALLOWED_ORIGINS = ["https://the-form.io", "https://dev.the-form.io"]
+if DEBUG:
+    CORS_ALLOWED_ORIGINS = ["http://*", "https://*"]
+else:
+    CORS_ALLOWED_ORIGINS = ["https://the-form.io", "https://dev.the-form.io"]
 
 ROOT_URLCONF = "src.urls"
 
 # mail settings
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = os.environ.get("EMAIL_HOST")
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
@@ -104,17 +111,17 @@ if DEBUG:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+            "NAME": os.path.join(BASE_DIR, "sqlite3.db"),
         }
     }
 else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.environ.get("POSTGRES_DB_PRODUCTION"),
-            "USER": os.environ.get("POSTGRES_USER_PRODUCTION"),
-            "PASSWORD": os.environ.get("POSTGRES_PASSWORD_PRODUCTION"),
-            "HOST": os.environ.get("POSTGRES_HOST_PRODUCTION"),
+            "NAME": config("POSTGRES_DB_PRODUCTION"),
+            "USER": config("POSTGRES_USER_PRODUCTION"),
+            "PASSWORD": config("POSTGRES_PASSWORD_PRODUCTION"),
+            "HOST": config("POSTGRES_HOST_PRODUCTION"),
             "PORT": "5432",
         }
     }
@@ -180,7 +187,7 @@ LOGGING = {
             "level": "DEBUG",
             "filters": [REQUIRE_TYPE],
             "class": "logging.handlers.RotatingFileHandler",
-            "filename": "/var/log/django_log/django.log",
+            "filename": "/var/log/django_log/django.log" if not DEBUG else "/dev/null",
             "maxBytes": 1024 * 1024 * 5,  # 5 MB
             "backupCount": 5,
             "formatter": "standard",
