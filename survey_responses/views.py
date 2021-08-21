@@ -4,12 +4,10 @@ from survey_responses.models import SurveyResponse
 from surveys.models import Survey
 from utils import utils, responses
 
-# Create your views here.
-
 
 class ResponseView(View):
     def get(self, request: HttpRequest, id: str) -> HttpResponse:
-        if not utils.is_the_form(request):
+        if not utils.is_origin_valid(request):
             return utils.send_json(responses.notAllowed)
 
         if not utils.is_valid_uuid(id):
@@ -38,7 +36,7 @@ class ResponseView(View):
         return utils.send_json(result)
 
     def post(self, request: HttpRequest, id: str) -> HttpResponse:
-        if not utils.is_the_form(request):
+        if not utils.is_origin_valid(request):
             return utils.send_json(responses.notAllowed)
 
         if not utils.is_valid_uuid(id):
