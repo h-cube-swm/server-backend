@@ -28,6 +28,9 @@ SECRET_KEY = config("SECRET_KEY", default="S3cr3t_K3y_F0r_Dj@ng0_@pp")
 DEBUG = config("DEBUG", default=False, cast=bool)
 
 if DEBUG:
+    print("You are running in debug mode.")
+
+if DEBUG:
     ALLOWED_HOSTS = ["*"]
 else:
     ALLOWED_HOSTS = ["api.the-form.io"]
@@ -71,7 +74,7 @@ MIDDLEWARE = [
 ]
 
 if DEBUG:
-    CORS_ALLOWED_ORIGINS = ["http://*", "https://*"]
+    CORS_ALLOW_ALL_ORIGINS = True
 else:
     CORS_ALLOWED_ORIGINS = ["https://the-form.io", "https://dev.the-form.io"]
 
